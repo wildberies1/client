@@ -4,13 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wildberries — Покупатель</title>
+  <!-- 
+    Файл: client/index.html
+    Назначение: Сайт покупателя
+    Автор: Система Wildberries Clone
+    Версия: 1.0
+    Дата: 2025-04-05
+    Требования:
+      - Вход по номеру телефона
+      - Личный кабинет с заказами
+      - Постоянный QR-код для выдачи
+      - Уведомления при готовности заказа
+      - Голосовое оповещение
+      - 1000+ товаров
+      - Работа с Firebase Realtime Database
+  -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <style>
+    /* 
+      Стили для страницы покупателя
+      Фон: градиент фиолетовый
+      Шрифты: Segoe UI
+      Адаптивная сетка
+    */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%); color: #333; min-height: 100vh; }
     .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
-    #login { display: flex; background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
+    #login-screen { display: flex; background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
     .logo { font-size: 32px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .logo span { color: #ff6b6b; }
     input, button { padding: 14px; margin: 10px 0; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; width: 100%; max-width: 400px; }
@@ -38,39 +59,53 @@
 </head>
 <body>
 
-<div id="login" class="screen">
+<!-- Экран входа -->
+<div id="login-screen" class="screen">
   <div class="logo">Wild<span>berries</span></div>
   <h2>Вход по номеру телефона</h2>
-  <input type="tel" id="phone" placeholder="79991234567" maxlength="11" autofocus />
+  <p>Введите ваш номер для доступа к личному кабинету</p>
+  <input type="tel" id="phone-input" placeholder="79991234567" maxlength="11" autofocus />
   <button onclick="login()">Войти</button>
 </div>
 
-<div id="main" class="screen">
+<!-- Главный экран -->
+<div id="main-screen" class="screen">
   <div class="header">
-    <h2>🛍️ Каталог</h2>
+    <h2>🛍️ Каталог товаров</h2>
     <div>
       <button onclick="showCart()">Корзина (<span id="cart-count">0</span>)</button>
       <button onclick="showOrders()">Мои заказы</button>
       <button onclick="logout()">Выход</button>
     </div>
   </div>
-  <input type="text" class="search-bar" id="search" placeholder="Поиск..." oninput="search()" />
-  <div class="grid" id="products"></div>
+  <input type="text" class="search-bar" id="search-input" placeholder="Поиск по названию товара..." oninput="searchProducts()" />
+  <div class="grid" id="product-grid"></div>
 </div>
 
-<div id="cart" class="screen">
+<!-- Корзина -->
+<div id="cart-screen" class="screen">
   <div class="header">
     <h2>🛒 Корзина</h2>
     <button onclick="backToMain()">← Назад</button>
   </div>
   <div id="cart-items"></div>
-  <p><strong>Итого: <span id="cart-total">0</span> ₽</strong></p>
-  <label><input type="radio" name="payment" value="online" checked> Онлайн</label>
-  <label><input type="radio" name="payment" value="cash"> При получении</label>
-  <button class="btn-success" onclick="placeOrder()">Оформить заказ</button>
+  <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <h3>Способ оплаты</h3>
+    <label style="display: block; margin: 10px 0;">
+      <input type="radio" name="payment-method" value="online" checked /> Онлайн оплата
+    </label>
+    <label style="display: block; margin: 10px 0;">
+      <input type="radio" name="payment-method" value="cash" /> Оплата при получении
+    </label>
+    <div style="margin-top: 15px;">
+      <strong>Итого: <span id="cart-total">0</span> ₽</strong>
+    </div>
+    <button class="btn-success" style="width: 100%; margin-top: 15px;" onclick="placeOrder()">Оформить заказ</button>
+  </div>
 </div>
 
-<div id="orders" class="screen">
+<!-- Заказы -->
+<div id="orders-screen" class="screen">
   <div class="header">
     <h2>📦 Мои заказы</h2>
     <button onclick="backToMain()">← Назад</button>
@@ -78,7 +113,8 @@
   <div id="orders-list"></div>
 </div>
 
-<div id="order-detail" class="screen">
+<!-- Детали заказа -->
+<div id="order-detail-screen" class="screen">
   <div class="header">
     <h2>📝 Детали заказа</h2>
     <button onclick="backToOrders()">← Назад</button>
@@ -90,17 +126,19 @@
     <div class="qr-barcode" id="barcode-number"></div>
     <div class="qr-numbers" id="qr-numbers"></div>
   </div>
-  <button class="btn-success" onclick="copyQR()">Скопировать QR</button>
-  <button class="btn-warning" onclick="printQR()">Печать QR</button>
+  <button class="btn-success" style="margin-top: 20px;" onclick="copyQR()">Скопировать QR</button>
+  <button class="btn-warning" style="margin-top: 10px;" onclick="printQR()">Печать QR</button>
 </div>
 
+<!-- Уведомление -->
 <div id="notification" class="notification">
   <strong>🔔 Уведомление</strong>
-  <p id="notif-text">Ваш заказ прибыл!</p>
+  <p id="notification-text">Ваш заказ прибыл в ПВЗ!</p>
 </div>
 
 <script>
   // === Инициализация Firebase ===
+  // Используем вашу базу данных
   const firebaseConfig = {
     databaseURL: "https://renessans-bank-3df94-default-rtdb.europe-west1.firebasedatabase.app/"
   };
@@ -113,6 +151,7 @@
   let allProducts = [];
 
   // === Генерация 1000+ товаров ===
+  // Создаём реалистичные товары с категориями и ценами
   function generateProducts() {
     const categories = [
       "Электроника", "Одежда", "Обувь", "Косметика", "Быт", "Продукты", 
@@ -126,39 +165,41 @@
       const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
       const noun = nouns[Math.floor(Math.random() * nouns.length)];
       const name = `${adj} ${category.toLowerCase()} ${noun}`;
-      const price = Math.floor(Math.random() * 8000) + 200;
+      const price = Math.floor(Math.random() * 8000) + 200; // от 200 до 8200 руб
       allProducts.push({ id: i, name, price, category });
     }
   }
 
-  // === Вход ===
+  // === Функция входа ===
+  // Проверяет формат номера и устанавливает сессию
   function login() {
-    const phone = document.getElementById("phone").value.replace(/\D/g, '');
+    const phone = document.getElementById("phone-input").value.replace(/\D/g, '');
     if (phone.length !== 11 || !phone.startsWith('7')) {
       alert("Пожалуйста, введите номер в формате 79991234567");
       return;
     }
     currentUser = phone;
-    document.getElementById("login").style.display = "none";
-    document.getElementById("main").style.display = "flex";
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("main-screen").style.display = "flex";
     renderProducts(allProducts.slice(0, 50));
     listenForOrderUpdates();
   }
 
+  // === Выход из системы ===
   function logout() {
     currentUser = null;
     cart = [];
-    document.getElementById("main").style.display = "none";
-    document.getElementById("cart").style.display = "none";
-    document.getElementById("orders").style.display = "none";
-    document.getElementById("order-detail").style.display = "none";
-    document.getElementById("login").style.display = "flex";
-    document.getElementById("phone").value = "";
+    document.getElementById("main-screen").style.display = "none";
+    document.getElementById("cart-screen").style.display = "none";
+    document.getElementById("orders-screen").style.display = "none";
+    document.getElementById("order-detail-screen").style.display = "none";
+    document.getElementById("login-screen").style.display = "flex";
+    document.getElementById("phone-input").value = "";
   }
 
   // === Отображение товаров ===
   function renderProducts(products) {
-    const grid = document.getElementById("products");
+    const grid = document.getElementById("product-grid");
     grid.innerHTML = products.map(p => `
       <div class="product-card">
         <div class="product-name">${p.name}</div>
@@ -168,8 +209,9 @@
     `).join('');
   }
 
+  // === Поиск товаров ===
   function searchProducts() {
-    const query = document.getElementById("search").value.toLowerCase();
+    const query = document.getElementById("search-input").value.toLowerCase();
     if (query.trim() === "") {
       renderProducts(allProducts.slice(0, 50));
       return;
@@ -181,7 +223,7 @@
     renderProducts(filtered.slice(0, 50));
   }
 
-  // === Корзина ===
+  // === Работа с корзиной ===
   function addToCart(productId) {
     cart.push(productId);
     updateCartCount();
@@ -193,8 +235,8 @@
   }
 
   function showCart() {
-    document.getElementById("main").style.display = "none";
-    document.getElementById("cart").style.display = "flex";
+    document.getElementById("main-screen").style.display = "none";
+    document.getElementById("cart-screen").style.display = "flex";
     updateCartDisplay();
   }
 
@@ -232,10 +274,10 @@
   }
 
   function backToMain() {
-    document.getElementById("cart").style.display = "none";
-    document.getElementById("orders").style.display = "none";
-    document.getElementById("order-detail").style.display = "none";
-    document.getElementById("main").style.display = "flex";
+    document.getElementById("cart-screen").style.display = "none";
+    document.getElementById("orders-screen").style.display = "none";
+    document.getElementById("order-detail-screen").style.display = "none";
+    document.getElementById("main-screen").style.display = "flex";
   }
 
   // === Оформление заказа ===
@@ -245,7 +287,7 @@
       return;
     }
 
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
     const items = cart.map(id => allProducts.find(p => p.id === id)).filter(Boolean);
     const total = items.reduce((sum, item) => sum + item.price, 0);
 
@@ -271,10 +313,10 @@
       });
   }
 
-  // === Заказы ===
+  // === Загрузка заказов ===
   function showOrders() {
-    document.getElementById("main").style.display = "none";
-    document.getElementById("orders").style.display = "flex";
+    document.getElementById("main-screen").style.display = "none";
+    document.getElementById("orders-screen").style.display = "flex";
     loadUserOrders();
   }
 
@@ -318,13 +360,14 @@
       });
   }
 
+  // === Детали заказа ===
   function showOrderDetail(orderId) {
     db.ref('orders/' + orderId).once('value').then(snapshot => {
       const order = snapshot.val();
       if (!order) return;
 
-      document.getElementById("orders").style.display = "none";
-      document.getElementById("order-detail").style.display = "flex";
+      document.getElementById("orders-screen").style.display = "none";
+      document.getElementById("order-detail-screen").style.display = "flex";
 
       const info = document.getElementById("order-info");
       info.innerHTML = `
@@ -369,14 +412,14 @@
   }
 
   function backToOrders() {
-    document.getElementById("order-detail").style.display = "none";
-    document.getElementById("orders").style.display = "flex";
+    document.getElementById("order-detail-screen").style.display = "none";
+    document.getElementById("orders-screen").style.display = "flex";
   }
 
   // === Уведомления ===
   function showNotification(text) {
     const notif = document.getElementById("notification");
-    document.getElementById("notif-text").textContent = text;
+    document.getElementById("notification-text").textContent = text;
     notif.style.display = "block";
     setTimeout(() => {
       notif.style.display = "none";
@@ -424,7 +467,7 @@
 
   // === Инициализация ===
   generateProducts();
-  document.getElementById("login").style.display = "flex";
+  document.getElementById("login-screen").style.display = "flex";
 
   // Запуск слушателя после входа
   const originalLogin = login;
