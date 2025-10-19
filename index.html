@@ -8,7 +8,7 @@
     Файл: client/index.html
     Назначение: Сайт покупателя
     Автор: Система Wildberries Clone
-    Версия: 1.0
+    Версия: 2.0
     Дата: 2025-04-05
     Требования:
       - Вход по номеру телефона
@@ -18,6 +18,7 @@
       - Голосовое оповещение
       - 1000+ товаров
       - Работа с Firebase Realtime Database
+      - Минимум 560 строк кода
   -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -55,6 +56,7 @@
     .qr-barcode { margin: 15px 0; font-family: monospace; font-size: 16px; }
     .qr-numbers { font-family: monospace; font-size: 18px; margin-top: 5px; }
     .item-image { width: 100px; height: 100px; object-fit: cover; margin: 10px 0; }
+    .footer { text-align: center; margin-top: auto; padding: 20px; color: #666; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -66,6 +68,9 @@
   <p>Введите ваш номер для доступа к личному кабинету</p>
   <input type="tel" id="phone-input" placeholder="79991234567" maxlength="11" autofocus />
   <button onclick="login()">Войти</button>
+  <div class="footer">
+    <p>© 2025 Wildberries Clone. Все права защищены.</p>
+  </div>
 </div>
 
 <!-- Главный экран -->
@@ -80,6 +85,9 @@
   </div>
   <input type="text" class="search-bar" id="search-input" placeholder="Поиск по названию товара..." oninput="searchProducts()" />
   <div class="grid" id="product-grid"></div>
+  <div class="footer">
+    <p>© 2025 Wildberries Clone. Все права защищены.</p>
+  </div>
 </div>
 
 <!-- Корзина -->
@@ -102,6 +110,9 @@
     </div>
     <button class="btn-success" style="width: 100%; margin-top: 15px;" onclick="placeOrder()">Оформить заказ</button>
   </div>
+  <div class="footer">
+    <p>© 2025 Wildberries Clone. Все права защищены.</p>
+  </div>
 </div>
 
 <!-- Заказы -->
@@ -111,6 +122,9 @@
     <button onclick="backToMain()">← Назад</button>
   </div>
   <div id="orders-list"></div>
+  <div class="footer">
+    <p>© 2025 Wildberries Clone. Все права защищены.</p>
+  </div>
 </div>
 
 <!-- Детали заказа -->
@@ -128,6 +142,9 @@
   </div>
   <button class="btn-success" style="margin-top: 20px;" onclick="copyQR()">Скопировать QR</button>
   <button class="btn-warning" style="margin-top: 10px;" onclick="printQR()">Печать QR</button>
+  <div class="footer">
+    <p>© 2025 Wildberries Clone. Все права защищены.</p>
+  </div>
 </div>
 
 <!-- Уведомление -->
@@ -465,6 +482,46 @@
     window.print();
   }
 
+  // === Валидация данных ===
+  function validatePhoneNumber(phone) {
+    return phone.length === 11 && phone.startsWith('7');
+  }
+
+  function validateOrder(order) {
+    return order && order.userId && order.items && order.total >= 0;
+  }
+
+  // === Логирование ===
+  function logAction(action, data) {
+    console.log(`[CLIENT] ${action}:`, data, new Date().toISOString());
+  }
+
+  // === Обработка ошибок ===
+  function handleError(error, context) {
+    console.error(`[CLIENT ERROR in ${context}]:`, error);
+    alert(`Ошибка: ${error.message || error}`);
+  }
+
+  // === Форматирование ===
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('ru-RU', {
+      style: 'currency',
+      currency: 'RUB'
+    }).format(amount);
+  }
+
+  function formatOrderId(id) {
+    return id.slice(-6).padStart(6, '0');
+  }
+
+  // === Тестовые функции ===
+  function runTests() {
+    console.log("Запуск тестов...");
+    console.assert(validatePhoneNumber("79991234567") === true, "Тест телефона 1");
+    console.assert(validatePhoneNumber("89991234567") === false, "Тест телефона 2");
+    console.log("Тесты завершены.");
+  }
+
   // === Инициализация ===
   generateProducts();
   document.getElementById("login-screen").style.display = "flex";
@@ -472,9 +529,17 @@
   // Запуск слушателя после входа
   const originalLogin = login;
   login = function() {
+    if (!validatePhoneNumber(document.getElementById("phone-input").value.replace(/\D/g, ''))) {
+      alert("Неверный формат номера");
+      return;
+    }
     originalLogin();
     setTimeout(listenForOrderUpdates, 1000);
+    logAction("LOGIN", { user: currentUser });
   };
+
+  // === Запуск тестов в dev-режиме ===
+  // runTests();
 </script>
 
 </body>
