@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wildberries — Покупатель</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%); color: #333; min-height: 100vh; }
+    .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
+    #login { display: flex; background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; justify-content: center; align-items: center; flex-direction: column; }
+    input, button { padding: 14px; margin: 10px 0; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; width: 100%; max-width: 400px; }
+    button { cursor: pointer; background: #6c5ce7; color: white; border: none; font-weight: bold; }
+    .product-card { background: white; border-radius: 12px; padding: 16px; margin: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  </style>
+</head>
+<body>
+
+<div id="login" class="screen">
+  <h2>🔐 Вход по телефону</h2>
+  <input type="tel" id="phone" placeholder="79991234567" maxlength="11" autofocus />
+  <button onclick="login()">Войти</button>
+</div>
+
+<div id="main" class="screen">
+  <h2>🛍️ Каталог</h2>
+  <input type="text" id="search" placeholder="Поиск..." oninput="search()" style="width:100%; padding:12px; margin:10px 0;" />
+  <div class="grid" id="products"></div>
+</div>
+
+<script>
+  // 🔥 Общая Firebase для всех трёх репозиториев
+  const firebaseConfig = {
+    databaseURL: "https://renessans-bank-3df94-default-rtdb.europe-west1.firebasedatabase.app/"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  let user = null;
+  const products = Array.from({length: 1000}, (_, i) => ({
+    id: i+1,
+    name: `Товар ${i+1}`,
+    price: Math.floor(Math.random() * 5000) + 100
+  }));
+
+  function login() {
+    const p = document.getElementById("phone").value.replace(/\D/g, '');
+    if (p.length !== 11 || !p.startsWith('7')) return alert("Формат: 79991234567");
+    user = p;
+    document.getElementById("login").style.display = "none";
+    document.getElementById("main").style.display = "flex";
+    render(products.slice(0, 50));
+  }
+
+  function render(list) {
+    document.getElementById("products").innerHTML = list.map(p => 
+      `<div class="product-card">
+        <h3>${p.name}</h3>
+        <p>${p.price} ₽</p>
+        <button onclick="order(${p.id})">Заказать</button>
+       </div>`
+    ).join('');
+  }
+
+  function search() {
+    const q = document.getElementById("search").value.toLowerCase();
+    const filtered = products.filter(p => p.name.toLowerCase().includes(q));
+    render(filtered.slice(0, 50));
+  }
+
+  function order(productId) {
+    const product = products.find(p => p.id === productId);
+    const order = {
+      user: user,
+      items: [product],
+      total: product.price,
+      payment: "cash", // или "online"
+      status: "created",
+      pvz: "Г. Балашиха, проспект Ленина, 32Д",
+      timestamp: firebase.database.ServerValue.TIMESTAMP
+    };
+    db.ref('orders').push(order);
+    alert("Заказ оформлен! Ждите уведомления.");
+  }
+
+  document.getElementById("login").style.display = "flex";
+</script>
+
+</body>
+</html>
