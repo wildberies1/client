@@ -2,71 +2,154 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Дневник | Учитель — МБОУ СОШ №12 им. А. Ломоносова</title>
 <style>
   * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-  body { margin:0; background:#eef2f7; color:#1c2a3a; }
-  header { background:linear-gradient(135deg,#1e3a8a,#2563eb); color:#fff; padding:18px 26px; box-shadow:0 2px 12px rgba(0,0,0,.15); }
-  header h1 { margin:0; font-size:20px; }
-  header small { opacity:.85; }
-  .wrap { max-width:1200px; margin:24px auto; padding:0 16px; }
-  .card { background:#fff; border-radius:14px; padding:20px; box-shadow:0 4px 18px rgba(20,40,80,.08); margin-bottom:20px; }
-  .grid { display:grid; gap:14px; }
-  .grid.cols-3 { grid-template-columns:repeat(3,1fr); }
-  .grid.cols-4 { grid-template-columns:repeat(4,1fr); }
-  @media(max-width:900px){ .grid.cols-3,.grid.cols-4{grid-template-columns:1fr 1fr;} }
-  label { font-size:13px; font-weight:600; color:#475569; display:block; margin-bottom:4px; }
-  input, select, textarea { width:100%; padding:9px 11px; border:1px solid #cbd5e1; border-radius:9px; font-size:14px; background:#f8fafc; }
-  input:focus, select:focus, textarea:focus { outline:2px solid #2563eb33; border-color:#2563eb; background:#fff; }
-  button { cursor:pointer; border:none; border-radius:9px; padding:10px 16px; font-weight:600; font-size:14px; transition:.15s; }
-  .btn-primary { background:#2563eb; color:#fff; } .btn-primary:hover{background:#1d4ed8;}
-  .btn-success { background:#16a34a; color:#fff; } .btn-success:hover{background:#15803d;}
-  .btn-danger  { background:#dc2626; color:#fff; } .btn-danger:hover{background:#b91c1c;}
-  .btn-ghost   { background:#e2e8f0; color:#1e293b; } .btn-ghost:hover{background:#cbd5e1;}
-  table { width:100%; border-collapse:collapse; margin-top:10px; font-size:14px; }
-  th, td { padding:9px 10px; border-bottom:1px solid #e2e8f0; text-align:left; }
-  th { background:#f1f5f9; font-size:13px; text-transform:uppercase; letter-spacing:.4px; color:#475569; }
-  .badge { padding:3px 9px; border-radius:20px; font-size:12px; font-weight:700; color:#fff; }
-  .g5{background:#16a34a}.g4{background:#65a30d}.g3{background:#f59e0b}.g2{background:#dc2626}
-  .toast { position:fixed; bottom:20px; right:20px; background:#1e293b; color:#fff; padding:12px 18px; border-radius:10px; opacity:0; transition:.3s; z-index:99;}
-  .toast.show{opacity:1;}
-  h2 { margin:0 0 14px; font-size:18px; }
-  .hint { font-size:12px; color:#64748b; margin-top:6px; }
+  html, body { margin: 0; padding: 0; background: #eef2f7; color: #1c2a3a; }
+  header {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #fff; padding: 18px 26px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+  }
+  header h1 { margin: 0; font-size: 20px; }
+  header small { opacity: .85; display: block; font-size: 12px; margin-top: 2px; }
+  .header-right { font-size: 13px; text-align: right; }
+  .badge-role {
+    display: inline-block; background: rgba(255,255,255,.2);
+    padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  }
+  .wrap { max-width: 1240px; margin: 24px auto; padding: 0 16px; }
+  .card {
+    background: #fff; border-radius: 14px; padding: 22px;
+    box-shadow: 0 4px 18px rgba(20,40,80,.08); margin-bottom: 20px;
+  }
+  .card h2 { margin: 0 0 16px; font-size: 18px; color: #1e293b; }
+  .grid { display: grid; gap: 14px; }
+  .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 900px) {
+    .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
+  }
+  label { font-size: 13px; font-weight: 600; color: #475569; display: block; margin-bottom: 5px; }
+  input, select, textarea {
+    width: 100%; padding: 10px 12px;
+    border: 1px solid #cbd5e1; border-radius: 9px;
+    font-size: 14px; background: #f8fafc;
+    font-family: inherit; transition: .15s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid #2563eb33; border-color: #2563eb; background: #fff;
+  }
+  button {
+    cursor: pointer; border: none; border-radius: 9px;
+    padding: 10px 16px; font-weight: 600; font-size: 14px;
+    transition: .15s; font-family: inherit;
+  }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #1d4ed8; }
+  .btn-success { background: #16a34a; color: #fff; }
+  .btn-success:hover:not(:disabled) { background: #15803d; }
+  .btn-danger  { background: #dc2626; color: #fff; }
+  .btn-danger:hover:not(:disabled)  { background: #b91c1c; }
+  .btn-ghost   { background: #e2e8f0; color: #1e293b; }
+  .btn-ghost:hover:not(:disabled)   { background: #cbd5e1; }
+  .btn-warn    { background: #f59e0b; color: #fff; }
+  .btn-warn:hover:not(:disabled)    { background: #d97706; }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+  th, td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
+  th {
+    background: #f1f5f9; font-size: 12px;
+    text-transform: uppercase; letter-spacing: .5px; color: #475569;
+  }
+  tr:hover td { background: #f8fafc; }
+  .badge {
+    display: inline-block; padding: 3px 9px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .g5 { background: #16a34a; }
+  .g4 { background: #65a30d; }
+  .g3 { background: #f59e0b; }
+  .g2 { background: #dc2626; }
+  .toast {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #1e293b; color: #fff; padding: 12px 20px;
+    border-radius: 10px; opacity: 0; transition: .3s;
+    z-index: 999; font-size: 14px; max-width: 320px;
+  }
+  .toast.show { opacity: 1; }
+  .hint { font-size: 12px; color: #64748b; margin-top: 6px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .stat {
+    background: linear-gradient(135deg,#f0f9ff,#e0f2fe);
+    padding: 14px; border-radius: 10px; border-left: 4px solid #2563eb;
+  }
+  .stat .num { font-size: 22px; font-weight: 700; color: #1e3a8a; }
+  .stat .lbl { font-size: 12px; color: #475569; text-transform: uppercase; }
+  .mark-item {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin: 2px 4px 2px 0; padding: 3px 6px 3px 3px;
+    background: #f1f5f9; border-radius: 20px; font-size: 12px;
+  }
+  .empty { color: #94a3b8; font-style: italic; padding: 12px; text-align: center; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab {
+    background: #e2e8f0; color: #475569; padding: 8px 16px;
+    border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px;
+    border: none;
+  }
+  .tab.active { background: #2563eb; color: #fff; }
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>📘 Электронный журнал — МБОУ СОШ №12 им. Алексея Ломоносова</h1>
-  <small>Кабинет учителя</small>
+  <div>
+    <h1>📘 Электронный журнал</h1>
+    <small>МБОУ СОШ №12 им. Алексея Ломоносова — Кабинет учителя</small>
+  </div>
+  <div class="header-right">
+    <span class="badge-role" id="roleBadge">Не авторизован</span>
+  </div>
 </header>
 
 <div class="wrap">
 
-  <!-- ВЫБОР УЧИТЕЛЯ -->
-  <div class="card">
-    <h2>👩‍🏫 Вход учителя</h2>
+  <!-- ЭКРАН ВХОДА -->
+  <div class="card" id="loginCard">
+    <h2>👩‍🏫 Вход в личный кабинет учителя</h2>
     <div class="grid cols-3">
       <div>
-        <label>Логин учителя</label>
-        <input id="login" placeholder="например: ivanova">
+        <label>Логин</label>
+        <input id="loginInput" placeholder="например: ivanova" autocomplete="off">
       </div>
       <div>
         <label>Пароль</label>
-        <input id="pass" type="password" placeholder="••••••">
+        <input id="passInput" type="password" placeholder="••••••">
       </div>
       <div style="display:flex; align-items:flex-end;">
-        <button class="btn-primary" onclick="loginTeacher()">Войти</button>
+        <button class="btn-primary" onclick="loginTeacher()" style="width:100%">Войти</button>
       </div>
     </div>
-    <div class="hint">Логин/пароль выдаёт директор в своём кабинете.</div>
+    <div class="hint">Логин и пароль выдаёт директор школы в своём кабинете.</div>
   </div>
 
-  <div id="teacherPanel" style="display:none">
+  <!-- ОСНОВНАЯ ПАНЕЛЬ -->
+  <div id="panel" class="hidden">
 
     <!-- ВЫБОР КЛАССА -->
     <div class="card">
-      <h2>🎓 Выбор класса</h2>
-      <div class="grid cols-3">
+      <h2>🎓 Выбор класса и предмета</h2>
+      <div class="grid cols-4">
         <div>
           <label>Класс</label>
           <select id="selClass"></select>
@@ -74,31 +157,59 @@
         <div>
           <label>Предмет</label>
           <select id="selSubject">
-            <option>Математика</option><option>Русский язык</option><option>Литература</option>
-            <option>История</option><option>Физика</option><option>Химия</option>
-            <option>Биология</option><option>География</option><option>Английский язык</option>
-            <option>Информатика</option><option>Обществознание</option><option>Чтение</option>
+            <option>Математика</option>
+            <option>Русский язык</option>
+            <option>Литература</option>
+            <option>История</option>
+            <option>Физика</option>
+            <option>Химия</option>
+            <option>Биология</option>
+            <option>География</option>
+            <option>Английский язык</option>
+            <option>Информатика</option>
+            <option>Обществознание</option>
+            <option>Чтение</option>
+            <option>Окружающий мир</option>
+            <option>Технология</option>
+            <option>Физкультура</option>
+            <option>ИЗО</option>
+            <option>Музыка</option>
           </select>
         </div>
-        <div style="display:flex; align-items:flex-end;">
-          <button class="btn-primary" onclick="loadStudents()">Показать учеников</button>
+        <div style="grid-column: span 2; display: flex; align-items: flex-end; gap: 8px;">
+          <button class="btn-primary" onclick="loadStudents()">📥 Показать учеников</button>
+          <button class="btn-ghost" onclick="logoutTeacher()">🚪 Выйти</button>
         </div>
+      </div>
+      <div class="hint" id="teacherInfo"></div>
+    </div>
+
+    <!-- СТАТИСТИКА -->
+    <div class="card" id="statsCard" style="display:none">
+      <h2>📊 Краткая статистика по классу</h2>
+      <div class="stat-grid">
+        <div class="stat"><div class="num" id="stStudents">0</div><div class="lbl">Учеников</div></div>
+        <div class="stat"><div class="num" id="stMarks">0</div><div class="lbl">Оценок</div></div>
+        <div class="stat"><div class="num" id="stAvg">—</div><div class="lbl">Средний балл</div></div>
+        <div class="stat"><div class="num" id="stFive">0</div><div class="lbl">Пятёрок</div></div>
       </div>
     </div>
 
-    <!-- ДНЕВНИК КЛАССА -->
+    <!-- ЖУРНАЛ -->
     <div class="card">
       <h2>📋 Журнал класса</h2>
       <table id="tbl">
         <thead>
           <tr>
-            <th>Ученик</th>
+            <th style="width: 220px;">Ученик</th>
             <th>Оценки</th>
-            <th>Триместр</th>
-            <th>Действия</th>
+            <th style="width: 140px;">Триместр</th>
+            <th style="width: 300px;">Действия</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <tr><td colspan="4" class="empty">Выберите класс и нажмите «Показать учеников»</td></tr>
+        </tbody>
       </table>
     </div>
 
@@ -112,7 +223,12 @@
         </div>
         <div>
           <label>Оценка (2–5)</label>
-          <select id="selMark"><option>5</option><option>4</option><option>3</option><option>2</option></select>
+          <select id="selMark">
+            <option value="5">5 — отлично</option>
+            <option value="4">4 — хорошо</option>
+            <option value="3">3 — удовлетворительно</option>
+            <option value="2">2 — неудовлетворительно</option>
+          </select>
         </div>
         <div>
           <label>За что</label>
@@ -130,13 +246,13 @@
           <input type="date" id="markDate">
         </div>
       </div>
-      <div class="grid cols-4" style="margin-top:14px">
-        <div style="grid-column:span 3">
+      <div class="grid cols-4" style="margin-top: 14px;">
+        <div style="grid-column: span 3;">
           <label>Комментарий (необязательно)</label>
           <input id="markComment" placeholder="Например: отлично раскрыта тема">
         </div>
         <div style="display:flex; align-items:flex-end;">
-          <button class="btn-success" onclick="addMark()">Поставить</button>
+          <button class="btn-success" onclick="addMark()" style="width:100%">Поставить</button>
         </div>
       </div>
     </div>
@@ -149,21 +265,53 @@
           <label>Дата</label>
           <input type="date" id="hwDate">
         </div>
-        <div style="grid-column:span 2">
-          <label>Задание</label>
-          <textarea id="hwText" rows="2" placeholder="§12, стр. 45-47, упр. 3,4"></textarea>
+        <div style="grid-column: span 2;">
+          <label>Текст задания</label>
+          <textarea id="hwText" rows="3" placeholder="§12, стр. 45–47, упр. 3, 4"></textarea>
         </div>
       </div>
-      <div style="margin-top:12px">
-        <button class="btn-primary" onclick="addHomework()">Задать ДЗ</button>
+      <div style="margin-top: 12px; display: flex; gap: 8px;">
+        <button class="btn-primary" onclick="addHomework()">📝 Задать ДЗ</button>
+        <button class="btn-ghost" onclick="showMyHomework()">📚 Мои ДЗ по классу</button>
+      </div>
+      <div id="hwPreview" style="margin-top: 14px;"></div>
+    </div>
+
+    <!-- ВЫСТАВЛЕНИЕ ТРИМЕСТРА -->
+    <div class="card">
+      <h2>🏆 Выставить триместровую оценку</h2>
+      <div class="hint" style="margin-bottom: 10px;">
+        После выставления триместровая оценка <b>не изменяется</b> обычным способом — только через директора (сброс).
+      </div>
+      <div class="grid cols-3">
+        <div>
+          <label>Ученик</label>
+          <select id="termStudent"></select>
+        </div>
+        <div>
+          <label>Триместровая оценка</label>
+          <select id="termValue">
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+        <div style="display:flex; align-items:flex-end;">
+          <button class="btn-warn" onclick="setTerm()" style="width:100%">Выставить</button>
+        </div>
       </div>
     </div>
 
     <!-- ОТЧЁТ -->
     <div class="card">
-      <h2>📊 Отчёт по оценкам</h2>
-      <button class="btn-ghost" onclick="buildReport()">Сформировать отчёт</button>
-      <div id="report" style="margin-top:14px; font-size:14px;"></div>
+      <h2>📈 Отчёт по оценкам</h2>
+      <div style="display:flex; gap:8px; flex-wrap: wrap;">
+        <button class="btn-primary" onclick="buildReport()">Сформировать отчёт</button>
+        <button class="btn-ghost" onclick="exportCSV()">⬇️ Скачать CSV</button>
+        <button class="btn-ghost" onclick="clearReport()">Очистить</button>
+      </div>
+      <div id="report" style="margin-top: 14px;"></div>
     </div>
 
   </div>
@@ -173,7 +321,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, set, push, remove, child, update }
+import { getDatabase, ref, get, set, push, remove, child, update, onValue }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -188,95 +336,211 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
+/* ============================================================
+   ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+   ============================================================ */
 let teacher = null;
 let currentClass = "";
+let cachedStudents = [];
+let cachedMarks = {};
 
-/* ============ УТИЛИТЫ ============ */
-const LETTERS = ["А","Б","В","Г","Д","Е"];
-function classesList(){
-  const arr=[];
-  for(let n=1;n<=11;n++) for(const L of LETTERS) arr.push(`${n}${L}`);
+const LETTERS = ["А", "Б", "В", "Г", "Д", "Е"];
+const SUBJECT_LIST = [
+  "Математика","Русский язык","Литература","История","Физика","Химия",
+  "Биология","География","Английский язык","Информатика","Обществознание",
+  "Чтение","Окружающий мир","Технология","Физкультура","ИЗО","Музыка"
+];
+
+/* ============================================================
+   УТИЛИТЫ
+   ============================================================ */
+function classesList() {
+  const arr = [];
+  for (let n = 1; n <= 11; n++) for (const L of LETTERS) arr.push(`${n}${L}`);
   return arr;
 }
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
+
+function toast(msg, duration = 2400) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), duration);
 }
-function markBadge(m){
-  const cls = m==5?'g5':m==4?'g4':m==3?'g3':'g2';
+
+function markBadge(m) {
+  const cls = m == 5 ? 'g5' : m == 4 ? 'g4' : m == 3 ? 'g3' : 'g2';
   return `<span class="badge ${cls}">${m}</span>`;
 }
-function avgToMark(avg){
-  if(avg>=4.5) return 5;
-  if(avg>=3.5) return 4;
-  if(avg>=2.5) return 3;
+
+function avgToMark(avg) {
+  if (avg >= 4.5) return 5;
+  if (avg >= 3.5) return 4;
+  if (avg >= 2.5) return 3;
   return 2;
 }
 
-/* ============ ВХОД УЧИТЕЛЯ ============ */
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  const [y, m, d] = iso.split('-');
+  return `${d}.${m}.${y}`;
+}
+
+/* ============================================================
+   ВХОД / ВЫХОД УЧИТЕЛЯ
+   ============================================================ */
 window.loginTeacher = async () => {
-  const login = document.getElementById('login').value.trim();
-  const pass  = document.getElementById('pass').value.trim();
-  if(!login||!pass) return toast('Введите логин и пароль');
-  const snap = await get(ref(db,'teachers'));
-  const list = snap.val()||{};
-  const found = Object.entries(list).find(([id,t])=>t.login===login && t.password===pass);
-  if(!found) return toast('❌ Неверный логин или пароль');
-  teacher = { id: found[0], ...found[1] };
-  document.getElementById('teacherPanel').style.display='block';
-  document.getElementById('selClass').innerHTML = classesList().map(c=>`<option>${c}</option>`).join('');
-  document.getElementById('markDate').valueAsDate = new Date();
-  document.getElementById('hwDate').valueAsDate = new Date();
-  toast(`Добро пожаловать, ${teacher.fio}`);
-};
+  const login = document.getElementById('loginInput').value.trim();
+  const pass  = document.getElementById('passInput').value.trim();
+  if (!login || !pass) return toast('Введите логин и пароль');
 
-/* ============ ЗАГРУЗКА УЧЕНИКОВ ============ */
-window.loadStudents = async () => {
-  currentClass = document.getElementById('selClass').value;
-  const snap = await get(ref(db,'students'));
-  const all = snap.val()||{};
-  const students = Object.entries(all).filter(([,s])=>s.class===currentClass);
-  const tbody = document.querySelector('#tbl tbody');
-  const selSt = document.getElementById('selStudent');
-  tbody.innerHTML=''; selSt.innerHTML='';
-  if(!students.length){ tbody.innerHTML='<tr><td colspan="4">Нет учеников в классе</td></tr>'; return; }
+  try {
+    const snap = await get(ref(db, 'teachers'));
+    const list = snap.val() || {};
+    const found = Object.entries(list).find(([id, t]) =>
+      t.login === login && t.password === pass
+    );
+    if (!found) return toast('❌ Неверный логин или пароль');
 
-  const subject = document.getElementById('selSubject').value;
-  const marksSnap = await get(ref(db,'marks'));
-  const allMarks = marksSnap.val()||{};
+    teacher = { id: found[0], ...found[1] };
+    document.getElementById('roleBadge').textContent = teacher.fio;
+    document.getElementById('loginCard').style.display = 'none';
+    document.getElementById('panel').classList.remove('hidden');
+    document.getElementById('teacherInfo').textContent =
+      `${teacher.fio} — ${teacher.subject || 'предмет не указан'} • класс: ${teacher.class || '—'}`;
 
-  for(const [id,s] of students){
-    const myMarks = Object.entries(allMarks)
-      .filter(([,m])=>m.studentId===id && m.subject===subject)
-      .map(([mid,m])=>({mid,...m}));
-    const nums = myMarks.map(m=>+m.value);
-    const avg = nums.length ? nums.reduce((a,b)=>a+b,0)/nums.length : 0;
-    const tri = nums.length ? avgToMark(avg) : '—';
+    // Заполняем селекты
+    document.getElementById('selClass').innerHTML =
+      classesList().map(c => `<option>${c}</option>`).join('');
+    if (teacher.class) document.getElementById('selClass').value = teacher.class;
+    if (teacher.subject) document.getElementById('selSubject').value = teacher.subject;
 
-    tbody.innerHTML += `
-      <tr>
-        <td><b>${s.fio}</b><br><small>${s.birth||''}</small></td>
-        <td>${myMarks.map(m=>`${markBadge(m.value)} <small>${m.type}</small>
-             <button class="btn-danger" style="padding:2px 6px;font-size:11px"
-               onclick="delMark('${m.mid}')">✕</button>`).join('<br>') || '—'}</td>
-        <td><b>${tri}</b> <small>(сред. ${avg?avg.toFixed(2):'—'})</small></td>
-        <td>
-          <button class="btn-ghost" style="padding:5px 10px;font-size:12px"
-            onclick="quickMark('${id}',5)">5</button>
-          <button class="btn-ghost" style="padding:5px 10px;font-size:12px"
-            onclick="quickMark('${id}',4)">4</button>
-          <button class="btn-ghost" style="padding:5px 10px;font-size:12px"
-            onclick="quickMark('${id}',3)">3</button>
-          <button class="btn-ghost" style="padding:5px 10px;font-size:12px"
-            onclick="quickMark('${id}',2)">2</button>
-        </td>
-      </tr>`;
-    selSt.innerHTML += `<option value="${id}">${s.fio}</option>`;
+    document.getElementById('markDate').valueAsDate = new Date();
+    document.getElementById('hwDate').valueAsDate = new Date();
+
+    toast(`Добро пожаловать, ${teacher.fio}`);
+  } catch (e) {
+    console.error(e);
+    toast('Ошибка подключения к базе: ' + e.message);
   }
 };
 
-/* ============ ОЦЕНКИ ============ */
+window.logoutTeacher = () => {
+  teacher = null;
+  document.getElementById('panel').classList.add('hidden');
+  document.getElementById('loginCard').style.display = 'block';
+  document.getElementById('roleBadge').textContent = 'Не авторизован';
+  document.getElementById('loginInput').value = '';
+  document.getElementById('passInput').value = '';
+};
+
+/* ============================================================
+   ЗАГРУЗКА УЧЕНИКОВ И ЖУРНАЛА
+   ============================================================ */
+window.loadStudents = async () => {
+  currentClass = document.getElementById('selClass').value;
+  const subject = document.getElementById('selSubject').value;
+
+  const [studentsSnap, marksSnap, termsSnap] = await Promise.all([
+    get(ref(db, 'students')),
+    get(ref(db, 'marks')),
+    get(ref(db, 'terms'))
+  ]);
+
+  const allStudents = studentsSnap.val() || {};
+  const allMarks = marksSnap.val() || {};
+  cachedMarks = allMarks;
+  const allTerms = termsSnap.val() || {};
+
+  const students = Object.entries(allStudents)
+    .filter(([, s]) => s.class === currentClass)
+    .sort((a, b) => (a[1].fio || '').localeCompare(b[1].fio || ''));
+  cachedStudents = students;
+
+  const tbody = document.querySelector('#tbl tbody');
+  const selSt = document.getElementById('selStudent');
+  const selTerm = document.getElementById('termStudent');
+  tbody.innerHTML = '';
+  selSt.innerHTML = '';
+  selTerm.innerHTML = '';
+
+  if (!students.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">Нет учеников в классе</td></tr>';
+    document.getElementById('statsCard').style.display = 'none';
+    return;
+  }
+
+  let totalMarks = 0, sumMarks = 0, fiveCount = 0;
+
+  for (const [id, s] of students) {
+    const myMarks = Object.entries(allMarks)
+      .filter(([, m]) => m.studentId === id && m.subject === subject)
+      .map(([mid, m]) => ({ mid, ...m }))
+      .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+
+    const nums = myMarks.map(m => +m.value);
+    const avg = nums.length ? nums.reduce((a, b) => a + b, 0) / nums.length : 0;
+    const termKey = `${currentClass}_${subject}_${id}`;
+    const term = allTerms[termKey];
+
+    totalMarks += nums.length;
+    sumMarks += nums.reduce((a, b) => a + b, 0);
+    fiveCount += nums.filter(n => n === 5).length;
+
+    const marksHtml = myMarks.length
+      ? myMarks.map(m => `
+          <span class="mark-item">
+            ${markBadge(m.value)}
+            <small>${escapeHtml(m.type)} • ${formatDate(m.date)}</small>
+            <button class="btn-danger btn-sm" title="Удалить"
+              onclick="delMark('${m.mid}')">✕</button>
+          </span>`).join('')
+      : '<span class="empty" style="padding:0">нет оценок</span>';
+
+    const termHtml = term
+      ? `${markBadge(term.value)} <small style="color:#64748b">зафиксирована</small>`
+      : `<b>${nums.length ? avgToMark(avg) : '—'}</b>
+         <small>${nums.length ? '(реком., сред. ' + avg.toFixed(2) + ')' : ''}</small>`;
+
+    tbody.innerHTML += `
+      <tr>
+        <td><b>${escapeHtml(s.fio)}</b><br><small>${escapeHtml(s.birth || '')}</small></td>
+        <td>${marksHtml}</td>
+        <td>${termHtml}</td>
+        <td>
+          <button class="btn-ghost btn-sm" onclick="quickMark('${id}',5)">5</button>
+          <button class="btn-ghost btn-sm" onclick="quickMark('${id}',4)">4</button>
+          <button class="btn-ghost btn-sm" onclick="quickMark('${id}',3)">3</button>
+          <button class="btn-ghost btn-sm" onclick="quickMark('${id}',2)">2</button>
+        </td>
+      </tr>`;
+
+    selSt.innerHTML += `<option value="${id}">${escapeHtml(s.fio)}</option>`;
+    selTerm.innerHTML += `<option value="${id}">${escapeHtml(s.fio)}</option>`;
+  }
+
+  // Статистика
+  document.getElementById('statsCard').style.display = 'block';
+  document.getElementById('stStudents').textContent = students.length;
+  document.getElementById('stMarks').textContent = totalMarks;
+  document.getElementById('stAvg').textContent = totalMarks ? (sumMarks / totalMarks).toFixed(2) : '—';
+  document.getElementById('stFive').textContent = fiveCount;
+};
+
+/* ============================================================
+   ОЦЕНКИ
+   ============================================================ */
 window.addMark = async () => {
   const studentId = document.getElementById('selStudent').value;
   const value = +document.getElementById('selMark').value;
@@ -284,87 +548,240 @@ window.addMark = async () => {
   const date  = document.getElementById('markDate').value;
   const comment = document.getElementById('markComment').value.trim();
   const subject = document.getElementById('selSubject').value;
-  if(!studentId) return toast('Выберите ученика');
-  await push(ref(db,'marks'), {
-    studentId, value, type, date, comment, subject,
-    teacherId: teacher.id, teacherFio: teacher.fio,
-    createdAt: Date.now()
-  });
-  toast('✅ Оценка поставлена');
-  loadStudents();
+
+  if (!studentId) return toast('Выберите ученика');
+  if (!date) return toast('Укажите дату');
+
+  try {
+    await push(ref(db, 'marks'), {
+      studentId, value, type, date, comment, subject,
+      className: currentClass,
+      teacherId: teacher.id,
+      teacherFio: teacher.fio,
+      createdAt: Date.now()
+    });
+    toast('✅ Оценка поставлена');
+    document.getElementById('markComment').value = '';
+    loadStudents();
+  } catch (e) {
+    toast('Ошибка: ' + e.message);
+  }
 };
 
 window.quickMark = async (studentId, value) => {
-  await push(ref(db,'marks'), {
-    studentId, value, type:'Домашняя работа',
-    date:new Date().toISOString().slice(0,10),
-    subject: document.getElementById('selSubject').value,
-    teacherId: teacher.id, teacherFio: teacher.fio,
-    createdAt: Date.now()
-  });
-  toast(`Оценка ${value} поставлена`);
-  loadStudents();
+  const subject = document.getElementById('selSubject').value;
+  try {
+    await push(ref(db, 'marks'), {
+      studentId,
+      value,
+      type: 'Домашняя работа',
+      date: todayISO(),
+      subject,
+      className: currentClass,
+      teacherId: teacher.id,
+      teacherFio: teacher.fio,
+      createdAt: Date.now()
+    });
+    toast(`Оценка ${value} поставлена`);
+    loadStudents();
+  } catch (e) {
+    toast('Ошибка: ' + e.message);
+  }
 };
 
 window.delMark = async (mid) => {
-  if(!confirm('Удалить оценку?')) return;
-  await remove(ref(db,'marks/'+mid));
-  toast('Оценка удалена');
-  loadStudents();
+  if (!confirm('Удалить оценку? Действие необратимо.')) return;
+  try {
+    await remove(ref(db, 'marks/' + mid));
+    toast('Оценка удалена');
+    loadStudents();
+  } catch (e) {
+    toast('Ошибка: ' + e.message);
+  }
 };
 
-/* ============ ТРИМЕСТР ============ */
+/* ============================================================
+   ТРИМЕСТР
+   ============================================================ */
 window.setTerm = async () => {
-  const sid = document.getElementById('selStudent').value;
-  if(!sid) return toast('Выберите ученика');
+  const sid = document.getElementById('termStudent').value;
+  const val = +document.getElementById('termValue').value;
   const subject = document.getElementById('selSubject').value;
-  const val = prompt('Введите триместровую оценку (2–5). Она будет неизменяемой:');
-  if(!val || !['2','3','4','5'].includes(val)) return toast('Некорректно');
-  await set(ref(db,`terms/${currentClass}_${subject}_${sid}`), {
-    studentId: sid, subject, className: currentClass,
-    value: +val, setBy: teacher.fio, setAt: Date.now()
-  });
-  toast('Триместровая оценка сохранена (изменение только через сброс)');
+
+  if (!sid) return toast('Выберите ученика');
+  if (!confirm(`Выставить триместровую ${val} по предмету "${subject}"? Изменить потом нельзя.`)) return;
+
+  try {
+    const key = `${currentClass}_${subject}_${sid}`;
+    const existing = await get(ref(db, 'terms/' + key));
+    if (existing.exists()) {
+      return toast('❌ Триместровая уже выставлена. Изменение только через директора.');
+    }
+    await set(ref(db, 'terms/' + key), {
+      studentId: sid,
+      subject,
+      className: currentClass,
+      value: val,
+      setBy: teacher.fio,
+      setAt: Date.now()
+    });
+    toast('🏆 Триместровая оценка зафиксирована');
+    loadStudents();
+  } catch (e) {
+    toast('Ошибка: ' + e.message);
+  }
 };
 
-/* ============ ДЗ ============ */
+/* ============================================================
+   ДОМАШНЕЕ ЗАДАНИЕ
+   ============================================================ */
 window.addHomework = async () => {
   const date = document.getElementById('hwDate').value;
   const text = document.getElementById('hwText').value.trim();
   const subject = document.getElementById('selSubject').value;
-  if(!text) return toast('Введите текст ДЗ');
-  await push(ref(db,'homework'), {
-    class: currentClass, subject, date, text,
-    teacherFio: teacher.fio, createdAt: Date.now()
-  });
-  toast('✅ ДЗ задано');
-  document.getElementById('hwText').value='';
+
+  if (!text) return toast('Введите текст ДЗ');
+  if (!date) return toast('Укажите дату');
+
+  try {
+    await push(ref(db, 'homework'), {
+      class: currentClass,
+      subject,
+      date,
+      text,
+      teacherId: teacher.id,
+      teacherFio: teacher.fio,
+      createdAt: Date.now()
+    });
+    toast('✅ ДЗ задано');
+    document.getElementById('hwText').value = '';
+  } catch (e) {
+    toast('Ошибка: ' + e.message);
+  }
 };
 
-/* ============ ОТЧЁТ ============ */
+window.showMyHomework = async () => {
+  const subject = document.getElementById('selSubject').value;
+  const snap = await get(ref(db, 'homework'));
+  const all = snap.val() || {};
+  const list = Object.entries(all)
+    .filter(([, h]) => h.class === currentClass && h.subject === subject)
+    .sort((a, b) => (b[1].date || '').localeCompare(a[1].date || ''));
+
+  const box = document.getElementById('hwPreview');
+  if (!list.length) {
+    box.innerHTML = '<div class="empty">ДЗ по этому предмету ещё не задавались</div>';
+    return;
+  }
+  box.innerHTML = list.map(([id, h]) => `
+    <div style="background:#f0f9ff; border-left:4px solid #2563eb; padding:10px 14px; border-radius:8px; margin-bottom:8px;">
+      <b>${formatDate(h.date)}</b> — ${escapeHtml(h.subject)}
+      <button class="btn-danger btn-sm" style="float:right" onclick="delHomework('${id}')">Удалить</button>
+      <div style="margin-top:6px">${escapeHtml(h.text)}</div>
+    </div>`).join('');
+};
+
+window.delHomework = async (id) => {
+  if (!confirm('Удалить задание?')) return;
+  await remove(ref(db, 'homework/' + id));
+  toast('ДЗ удалено');
+  showMyHomework();
+};
+
+/* ============================================================
+   ОТЧЁТЫ
+   ============================================================ */
+let lastReportRows = [];
+
 window.buildReport = async () => {
   const subject = document.getElementById('selSubject').value;
-  const snap = await get(ref(db,'marks'));
-  const all = snap.val()||{};
-  const studentsSnap = await get(ref(db,'students'));
-  const students = studentsSnap.val()||{};
+  const [marksSnap, studentsSnap] = await Promise.all([
+    get(ref(db, 'marks')),
+    get(ref(db, 'students'))
+  ]);
+  const all = marksSnap.val() || {};
+  const students = studentsSnap.val() || {};
 
   const rows = {};
-  for(const [id,m] of Object.entries(all)){
-    if(m.subject!==subject) continue;
+  for (const [id, m] of Object.entries(all)) {
+    if (m.subject !== subject) continue;
     const s = students[m.studentId];
-    if(!s || s.class!==currentClass) continue;
-    if(!rows[id]) rows[id]={fio:s.fio, marks:[]};
-    rows[id].marks.push(+m.value);
+    if (!s || s.class !== currentClass) continue;
+    if (!rows[m.studentId]) rows[m.studentId] = { fio: s.fio, marks: [] };
+    rows[m.studentId].marks.push(+m.value);
   }
-  let html = `<table><thead><tr><th>Ученик</th><th>Кол-во</th><th>Средний</th><th>Рекоменд. триместр</th></tr></thead><tbody>`;
-  for(const r of Object.values(rows)){
-    const avg = r.marks.reduce((a,b)=>a+b,0)/r.marks.length;
-    html += `<tr><td>${r.fio}</td><td>${r.marks.length}</td><td>${avg.toFixed(2)}</td><td><b>${avgToMark(avg)}</b></td></tr>`;
+
+  lastReportRows = Object.values(rows).map(r => {
+    const avg = r.marks.reduce((a, b) => a + b, 0) / r.marks.length;
+    return {
+      fio: r.fio,
+      count: r.marks.length,
+      avg: avg.toFixed(2),
+      recommended: avgToMark(avg)
+    };
+  }).sort((a, b) => a.fio.localeCompare(b.fio));
+
+  if (!lastReportRows.length) {
+    document.getElementById('report').innerHTML = '<div class="empty">Нет данных для отчёта</div>';
+    return;
+  }
+
+  let html = `<table><thead><tr>
+    <th>Ученик</th><th>Кол-во оценок</th><th>Средний балл</th><th>Рекоменд. триместр</th>
+  </tr></thead><tbody>`;
+  for (const r of lastReportRows) {
+    html += `<tr>
+      <td>${escapeHtml(r.fio)}</td>
+      <td>${r.count}</td>
+      <td>${r.avg}</td>
+      <td><b>${r.recommended}</b></td>
+    </tr>`;
   }
   html += `</tbody></table>`;
-  document.getElementById('report').innerHTML = html || 'Нет данных';
+  document.getElementById('report').innerHTML = html;
 };
+
+window.exportCSV = () => {
+  if (!lastReportRows.length) return toast('Сначала сформируйте отчёт');
+  const subject = document.getElementById('selSubject').value;
+  let csv = `Отчёт по предмету "${subject}", класс ${currentClass}\n`;
+  csv += 'Ученик;Кол-во оценок;Средний балл;Рекоменд. триместр\n';
+  for (const r of lastReportRows) {
+    csv += `${r.fio};${r.count};${r.avg};${r.recommended}\n`;
+  }
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `report_${currentClass}_${subject}_${todayISO()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV скачан');
+};
+
+window.clearReport = () => {
+  document.getElementById('report').innerHTML = '';
+  lastReportRows = [];
+};
+
+/* ============================================================
+   АВТОЗАПОЛНЕНИЕ ДАТ
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('markDate').valueAsDate = new Date();
+  document.getElementById('hwDate').valueAsDate = new Date();
+});
+
+/* ============================================================
+   ХОТКЕИ
+   ============================================================ */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('markComment').value = '';
+  }
+});
+
+console.log('✅ Кабинет учителя загружен — МБОУ СОШ №12 им. А. Ломоносова');
 </script>
 </body>
 </html>
