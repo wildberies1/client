@@ -3,30 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Дневник | Учитель — МБОУ СОШ №12 им. А. Ломоносова</title>
+<title>📚 Дневник | Учитель — МБОУ СОШ №12 им. А. Ломоносова</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Marck+Script&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-  html, body { margin: 0; padding: 0; background: #eef2f7; color: #1c2a3a; }
+  /* ============================================================
+     ОСНОВА — тетрадный лист в клетку
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Montserrat', 'Segoe UI', sans-serif;
+    color: #1c2a3a;
+    min-height: 100vh;
+    background-color: #f7f4e9;
+    background-image:
+      linear-gradient(rgba(120,180,220,.22) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,180,220,.22) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+
+  /* Красная линия слева — как в тетради */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 40px; bottom: 0;
+    width: 2px;
+    background: rgba(220,80,80,.35);
+    z-index: 0;
+    pointer-events: none;
+  }
+  @media (max-width: 700px) { body::before { display: none; } }
+
+  /* ============================================================
+     ШАПКА — школьная доска
+     ============================================================ */
   header {
-    background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    color: #fff; padding: 18px 26px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+    position: relative;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,.06), transparent 60%),
+      linear-gradient(160deg, #1f3d2c 0%, #2d5a3f 55%, #1a3225 100%);
+    color: #fff;
+    padding: 22px 30px;
+    border-bottom: 8px solid #8b5a2b;
+    box-shadow: 0 8px 24px rgba(0,0,0,.35), inset 0 -2px 4px rgba(0,0,0,.4);
+    overflow: hidden;
+  }
+  header::after {
+    /* мел-эффект */
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(255,255,255,.05) 0 3px, transparent 4px),
+      radial-gradient(circle at 80% 60%, rgba(255,255,255,.04) 0 2px, transparent 3px),
+      radial-gradient(circle at 50% 85%, rgba(255,255,255,.05) 0 3px, transparent 4px),
+      radial-gradient(circle at 65% 20%, rgba(255,255,255,.03) 0 2px, transparent 3px);
+    pointer-events: none;
+  }
+  .header-inner {
+    position: relative; z-index: 1;
     display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 10px;
+    flex-wrap: wrap; gap: 12px;
+    max-width: 1240px; margin: 0 auto;
   }
-  header h1 { margin: 0; font-size: 20px; }
-  header small { opacity: .85; display: block; font-size: 12px; margin-top: 2px; }
-  .header-right { font-size: 13px; text-align: right; }
+  header h1 {
+    margin: 0; font-size: 24px;
+    font-family: 'Marck Script', 'Caveat', cursive;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 6px rgba(0,0,0,.5);
+  }
+  header small {
+    display: block; font-size: 13px; margin-top: 4px;
+    opacity: .85; font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  .header-right { text-align: right; font-size: 13px; }
   .badge-role {
-    display: inline-block; background: rgba(255,255,255,.2);
-    padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.35);
+    padding: 5px 14px; border-radius: 30px;
+    font-size: 12px; font-weight: 700;
+    backdrop-filter: blur(4px);
   }
-  .wrap { max-width: 1240px; margin: 24px auto; padding: 0 16px; }
+  .bell {
+    font-size: 26px; margin-left: 8px;
+    display: inline-block;
+    animation: swing 3s ease-in-out infinite;
+    transform-origin: top center;
+  }
+  @keyframes swing {
+    0%, 100% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+  }
+
+  /* ============================================================
+     ОБЁРТКА И КАРТОЧКИ-ДНЕВНИКИ
+     ============================================================ */
+  .wrap { max-width: 1240px; margin: 28px auto; padding: 0 16px; position: relative; z-index: 1; }
+
   .card {
-    background: #fff; border-radius: 14px; padding: 22px;
-    box-shadow: 0 4px 18px rgba(20,40,80,.08); margin-bottom: 20px;
+    position: relative;
+    background: #fffdf5;
+    border-radius: 8px;
+    padding: 24px 26px 24px 46px;
+    box-shadow:
+      0 2px 0 #e6ddc6,
+      0 6px 20px rgba(80,60,20,.12),
+      0 1px 2px rgba(0,0,0,.06);
+    margin-bottom: 22px;
+    border: 1px solid #ece2c9;
+    animation: cardIn .4s ease both;
   }
-  .card h2 { margin: 0 0 16px; font-size: 18px; color: #1e293b; }
+  /* Пружинка/скрепки слева */
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 14px; bottom: 14px; left: 14px;
+    width: 16px;
+    background-image: radial-gradient(circle, #b9a97a 3px, transparent 4px);
+    background-size: 16px 20px;
+    background-repeat: repeat-y;
+    opacity: .55;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card h2 {
+    margin: 0 0 18px; font-size: 19px; color: #2d4a35;
+    font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 2px dashed #d8ceb0;
+    padding-bottom: 10px;
+  }
+  .card h2::after {
+    content: ""; flex: 1;
+  }
+
+  /* ============================================================
+     СЕТКИ
+     ============================================================ */
   .grid { display: grid; gap: 14px; }
   .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
   .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -37,96 +157,227 @@
   @media (max-width: 600px) {
     .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
   }
-  label { font-size: 13px; font-weight: 600; color: #475569; display: block; margin-bottom: 5px; }
+
+  /* ============================================================
+     ФОРМЫ
+     ============================================================ */
+  label {
+    font-size: 12px; font-weight: 700; color: #6b5d3f;
+    display: block; margin-bottom: 5px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
   input, select, textarea {
     width: 100%; padding: 10px 12px;
-    border: 1px solid #cbd5e1; border-radius: 9px;
-    font-size: 14px; background: #f8fafc;
+    border: 2px solid #d8ceb0; border-radius: 8px;
+    font-size: 14px; background: #fffef9;
     font-family: inherit; transition: .15s;
+    color: #1c2a3a;
   }
   input:focus, select:focus, textarea:focus {
-    outline: 2px solid #2563eb33; border-color: #2563eb; background: #fff;
+    outline: none;
+    border-color: #2d5a3f;
+    box-shadow: 0 0 0 3px rgba(45,90,63,.15);
+    background: #fff;
   }
+
+  /* ============================================================
+     КНОПКИ — «меловые» и «деревянные»
+     ============================================================ */
   button {
-    cursor: pointer; border: none; border-radius: 9px;
-    padding: 10px 16px; font-weight: 600; font-size: 14px;
+    cursor: pointer; border: none; border-radius: 8px;
+    padding: 10px 18px; font-weight: 700; font-size: 14px;
     transition: .15s; font-family: inherit;
+    letter-spacing: .3px;
+    position: relative;
+    box-shadow: 0 3px 0 rgba(0,0,0,.15);
   }
+  button:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.15); }
   button:disabled { opacity: .5; cursor: not-allowed; }
-  .btn-primary { background: #2563eb; color: #fff; }
-  .btn-primary:hover:not(:disabled) { background: #1d4ed8; }
-  .btn-success { background: #16a34a; color: #fff; }
-  .btn-success:hover:not(:disabled) { background: #15803d; }
-  .btn-danger  { background: #dc2626; color: #fff; }
-  .btn-danger:hover:not(:disabled)  { background: #b91c1c; }
-  .btn-ghost   { background: #e2e8f0; color: #1e293b; }
-  .btn-ghost:hover:not(:disabled)   { background: #cbd5e1; }
-  .btn-warn    { background: #f59e0b; color: #fff; }
-  .btn-warn:hover:not(:disabled)    { background: #d97706; }
-  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn-primary {
+    background: linear-gradient(180deg, #3a7b52, #2d5a3f);
+    color: #fff;
+  }
+  .btn-primary:hover { background: linear-gradient(180deg, #428a5c, #2d5a3f); }
+  .btn-success {
+    background: linear-gradient(180deg, #4caf50, #388e3c);
+    color: #fff;
+  }
+  .btn-success:hover { background: linear-gradient(180deg, #57bb5b, #388e3c); }
+  .btn-danger {
+    background: linear-gradient(180deg, #e35d5d, #c0392b);
+    color: #fff;
+  }
+  .btn-danger:hover { background: linear-gradient(180deg, #ec6b6b, #c0392b); }
+  .btn-ghost {
+    background: #f0e9d2;
+    color: #4a3f2a;
+    box-shadow: 0 3px 0 #d8ceb0;
+  }
+  .btn-ghost:hover { background: #e8dec0; }
+  .btn-warn {
+    background: linear-gradient(180deg, #f5b042, #d18b15);
+    color: #fff;
+  }
+  .btn-warn:hover { background: linear-gradient(180deg, #f7bb58, #d18b15); }
+  .btn-sm { padding: 5px 10px; font-size: 12px; box-shadow: 0 2px 0 rgba(0,0,0,.15); }
+
+  /* ============================================================
+     ТАБЛИЦА-ЖУРНАЛ
+     ============================================================ */
   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-  th, td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
+  th, td { padding: 11px 10px; border-bottom: 1px solid #ece2c9; text-align: left; vertical-align: top; }
   th {
-    background: #f1f5f9; font-size: 12px;
-    text-transform: uppercase; letter-spacing: .5px; color: #475569;
+    background: linear-gradient(180deg, #f0e9d2, #e6ddc0);
+    font-size: 11px;
+    text-transform: uppercase; letter-spacing: .8px; color: #6b5d3f;
+    border-bottom: 2px solid #d8ceb0;
   }
-  tr:hover td { background: #f8fafc; }
+  tr:hover td { background: #fffef3; }
+  tbody tr { transition: .15s; }
+
+  /* ============================================================
+     ОЦЕНКИ — как печати в дневнике
+     ============================================================ */
   .badge {
-    display: inline-block; padding: 3px 9px; border-radius: 20px;
-    font-size: 12px; font-weight: 700; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 30px; height: 30px;
+    border-radius: 50%;
+    font-size: 15px; font-weight: 900;
+    color: #fff;
+    font-family: 'Caveat', cursive;
+    box-shadow: 0 2px 4px rgba(0,0,0,.25), inset 0 -2px 3px rgba(0,0,0,.15);
+    border: 2px solid rgba(255,255,255,.5);
+    transform: rotate(-3deg);
   }
-  .g5 { background: #16a34a; }
-  .g4 { background: #65a30d; }
-  .g3 { background: #f59e0b; }
-  .g2 { background: #dc2626; }
-  .toast {
-    position: fixed; bottom: 20px; right: 20px;
-    background: #1e293b; color: #fff; padding: 12px 20px;
-    border-radius: 10px; opacity: 0; transition: .3s;
-    z-index: 999; font-size: 14px; max-width: 320px;
+  .g5 { background: radial-gradient(circle at 30% 30%, #57bb5b, #2e7d32); }
+  .g4 { background: radial-gradient(circle at 30% 30%, #a4c93e, #6a8f1c); }
+  .g3 { background: radial-gradient(circle at 30% 30%, #f5b042, #d18b15); }
+  .g2 { background: radial-gradient(circle at 30% 30%, #ec6b6b, #b71c1c); animation: shake .5s ease; }
+  @keyframes shake {
+    0%, 100% { transform: rotate(-3deg) translateX(0); }
+    25% { transform: rotate(-3deg) translateX(-2px); }
+    75% { transform: rotate(-3deg) translateX(2px); }
   }
-  .toast.show { opacity: 1; }
-  .hint { font-size: 12px; color: #64748b; margin-top: 6px; }
-  .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-  .stat {
-    background: linear-gradient(135deg,#f0f9ff,#e0f2fe);
-    padding: 14px; border-radius: 10px; border-left: 4px solid #2563eb;
-  }
-  .stat .num { font-size: 22px; font-weight: 700; color: #1e3a8a; }
-  .stat .lbl { font-size: 12px; color: #475569; text-transform: uppercase; }
+
   .mark-item {
-    display: inline-flex; align-items: center; gap: 4px;
-    margin: 2px 4px 2px 0; padding: 3px 6px 3px 3px;
-    background: #f1f5f9; border-radius: 20px; font-size: 12px;
+    display: inline-flex; align-items: center; gap: 6px;
+    margin: 3px 5px 3px 0; padding: 4px 8px 4px 4px;
+    background: #f8f3e0; border-radius: 30px;
+    font-size: 12px;
+    border: 1px solid #ece2c9;
   }
-  .empty { color: #94a3b8; font-style: italic; padding: 12px; text-align: center; }
-  .tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-  .tab {
-    background: #e2e8f0; color: #475569; padding: 8px 16px;
-    border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px;
-    border: none;
+
+  /* ============================================================
+     СТАТИСТИКА
+     ============================================================ */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 700px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+  .stat {
+    background: linear-gradient(135deg, #f0f9e8, #e2f0d9);
+    padding: 16px; border-radius: 10px;
+    border-left: 5px solid #2d5a3f;
+    box-shadow: 0 2px 6px rgba(80,100,60,.1);
   }
-  .tab.active { background: #2563eb; color: #fff; }
+  .stat .num {
+    font-size: 30px; font-weight: 900; color: #2d5a3f;
+    font-family: 'Caveat', cursive;
+    line-height: 1;
+  }
+  .stat .lbl {
+    font-size: 11px; color: #6b5d3f;
+    text-transform: uppercase; letter-spacing: .5px;
+    margin-top: 6px; font-weight: 700;
+  }
+
+  /* ============================================================
+     УВЕДОМЛЕНИЯ
+     ============================================================ */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: linear-gradient(180deg, #2d5a3f, #1a3225);
+    color: #fff; padding: 14px 22px;
+    border-radius: 10px;
+    opacity: 0; transform: translateX(30px);
+    transition: .3s cubic-bezier(.2,1.4,.5,1);
+    z-index: 999; font-size: 14px; max-width: 320px;
+    border-left: 5px solid #f5b042;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+  }
+  .toast.show { opacity: 1; transform: translateX(0); }
+
+  .hint { font-size: 12px; color: #8a7a58; margin-top: 6px; font-style: italic; }
+  .empty { color: #a89a78; font-style: italic; padding: 16px; text-align: center; }
   .hidden { display: none !important; }
+
+  /* ============================================================
+     ЛОГИН-ЭКРАН
+     ============================================================ */
+  #loginCard {
+    max-width: 720px; margin: 40px auto;
+    background: #fffdf5;
+    border: 3px dashed #2d5a3f;
+    border-radius: 14px;
+    padding: 32px 30px 30px 46px;
+    position: relative;
+    box-shadow: 0 12px 36px rgba(45,90,63,.18);
+  }
+  #loginCard::before {
+    content: "🎒";
+    position: absolute; top: -26px; left: 30px;
+    font-size: 46px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,.2));
+  }
+  #loginCard h2 {
+    font-family: 'Caveat', cursive;
+    font-size: 30px; color: #2d5a3f;
+    margin-top: 4px;
+  }
+
+  /* ============================================================
+     ДОПОЛНИТЕЛЬНЫЕ ПЛЮШКИ
+     ============================================================ */
+  .school-stamp {
+    display: inline-block;
+    border: 3px double #b71c1c;
+    color: #b71c1c;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-family: 'Caveat', cursive;
+    font-size: 16px;
+    font-weight: 700;
+    transform: rotate(-4deg);
+    margin-left: 8px;
+    opacity: .85;
+  }
+
+  .paper-lines {
+    background-image: repeating-linear-gradient(
+      transparent, transparent 27px, #dfe7f0 28px
+    );
+    background-size: 100% 28px;
+    line-height: 28px;
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <h1>📘 Электронный журнал</h1>
-    <small>МБОУ СОШ №12 им. Алексея Ломоносова — Кабинет учителя</small>
-  </div>
-  <div class="header-right">
-    <span class="badge-role" id="roleBadge">Не авторизован</span>
+  <div class="header-inner">
+    <div>
+      <h1>📘 Электронный журнал <span class="bell">🔔</span></h1>
+      <small>МБОУ СОШ №12 им. Алексея Ломоносова — Кабинет учителя</small>
+    </div>
+    <div class="header-right">
+      <span class="badge-role" id="roleBadge">Не авторизован</span>
+    </div>
   </div>
 </header>
 
 <div class="wrap">
 
   <!-- ЭКРАН ВХОДА -->
-  <div class="card" id="loginCard">
-    <h2>👩‍🏫 Вход в личный кабинет учителя</h2>
+  <div id="loginCard">
+    <h2>Вход в личный кабинет учителя</h2>
     <div class="grid cols-3">
       <div>
         <label>Логин</label>
@@ -137,10 +388,11 @@
         <input id="passInput" type="password" placeholder="••••••">
       </div>
       <div style="display:flex; align-items:flex-end;">
-        <button class="btn-primary" onclick="loginTeacher()" style="width:100%">Войти</button>
+        <button class="btn-primary" onclick="loginTeacher()" style="width:100%">Войти ✏️</button>
       </div>
     </div>
     <div class="hint">Логин и пароль выдаёт директор школы в своём кабинете.</div>
+    <div class="school-stamp">СОШ №12</div>
   </div>
 
   <!-- ОСНОВНАЯ ПАНЕЛЬ -->
@@ -186,7 +438,7 @@
 
     <!-- СТАТИСТИКА -->
     <div class="card" id="statsCard" style="display:none">
-      <h2>📊 Краткая статистика по классу</h2>
+      <h2>📊 Статистика по классу</h2>
       <div class="stat-grid">
         <div class="stat"><div class="num" id="stStudents">0</div><div class="lbl">Учеников</div></div>
         <div class="stat"><div class="num" id="stMarks">0</div><div class="lbl">Оценок</div></div>
@@ -252,7 +504,7 @@
           <input id="markComment" placeholder="Например: отлично раскрыта тема">
         </div>
         <div style="display:flex; align-items:flex-end;">
-          <button class="btn-success" onclick="addMark()" style="width:100%">Поставить</button>
+          <button class="btn-success" onclick="addMark()" style="width:100%">Поставить ✍️</button>
         </div>
       </div>
     </div>
@@ -270,18 +522,18 @@
           <textarea id="hwText" rows="3" placeholder="§12, стр. 45–47, упр. 3, 4"></textarea>
         </div>
       </div>
-      <div style="margin-top: 12px; display: flex; gap: 8px;">
+      <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="btn-primary" onclick="addHomework()">📝 Задать ДЗ</button>
         <button class="btn-ghost" onclick="showMyHomework()">📚 Мои ДЗ по классу</button>
       </div>
       <div id="hwPreview" style="margin-top: 14px;"></div>
     </div>
 
-    <!-- ВЫСТАВЛЕНИЕ ТРИМЕСТРА -->
+    <!-- ТРИМЕСТР -->
     <div class="card">
       <h2>🏆 Выставить триместровую оценку</h2>
       <div class="hint" style="margin-bottom: 10px;">
-        После выставления триместровая оценка <b>не изменяется</b> обычным способом — только через директора (сброс).
+        ⚠️ После выставления триместровая оценка <b>не изменяется</b> — только через директора.
       </div>
       <div class="grid cols-3">
         <div>
@@ -289,7 +541,7 @@
           <select id="termStudent"></select>
         </div>
         <div>
-          <label>Триместровая оценка</label>
+          <label>Оценка</label>
           <select id="termValue">
             <option value="5">5</option>
             <option value="4">4</option>
@@ -298,7 +550,7 @@
           </select>
         </div>
         <div style="display:flex; align-items:flex-end;">
-          <button class="btn-warn" onclick="setTerm()" style="width:100%">Выставить</button>
+          <button class="btn-warn" onclick="setTerm()" style="width:100%">Выставить 🏅</button>
         </div>
       </div>
     </div>
@@ -321,7 +573,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, set, push, remove, child, update, onValue }
+import { getDatabase, ref, get, set, push, remove }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -336,30 +588,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
-/* ============================================================
-   ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
-   ============================================================ */
 let teacher = null;
 let currentClass = "";
 let cachedStudents = [];
-let cachedMarks = {};
 
-const LETTERS = ["А", "Б", "В", "Г", "Д", "Е"];
-const SUBJECT_LIST = [
-  "Математика","Русский язык","Литература","История","Физика","Химия",
-  "Биология","География","Английский язык","Информатика","Обществознание",
-  "Чтение","Окружающий мир","Технология","Физкультура","ИЗО","Музыка"
-];
+const LETTERS = ["А","Б","В","Г","Д","Е"];
 
-/* ============================================================
-   УТИЛИТЫ
-   ============================================================ */
 function classesList() {
   const arr = [];
   for (let n = 1; n <= 11; n++) for (const L of LETTERS) arr.push(`${n}${L}`);
   return arr;
 }
-
 function toast(msg, duration = 2400) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -367,44 +606,50 @@ function toast(msg, duration = 2400) {
   clearTimeout(window._toastTimer);
   window._toastTimer = setTimeout(() => t.classList.remove('show'), duration);
 }
-
 function markBadge(m) {
   const cls = m == 5 ? 'g5' : m == 4 ? 'g4' : m == 3 ? 'g3' : 'g2';
   return `<span class="badge ${cls}">${m}</span>`;
 }
-
 function avgToMark(avg) {
   if (avg >= 4.5) return 5;
   if (avg >= 3.5) return 4;
   if (avg >= 2.5) return 3;
   return 2;
 }
-
 function escapeHtml(str) {
   if (str == null) return '';
   return String(str)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
-
-function todayISO() {
-  return new Date().toISOString().slice(0, 10);
-}
-
 function formatDate(iso) {
   if (!iso) return '—';
   const [y, m, d] = iso.split('-');
   return `${d}.${m}.${y}`;
 }
+function todayISO() { return new Date().toISOString().slice(0,10); }
 
-/* ============================================================
-   ВХОД / ВЫХОД УЧИТЕЛЯ
-   ============================================================ */
+/* ============ ЗВОН ЗВОНКА ============ */
+function ringBell() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.value = 880;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+    o.start(); o.stop(ctx.currentTime + 0.5);
+  } catch(e) {}
+}
+
+/* ============ ВХОД ============ */
 window.loginTeacher = async () => {
   const login = document.getElementById('loginInput').value.trim();
   const pass  = document.getElementById('passInput').value.trim();
   if (!login || !pass) return toast('Введите логин и пароль');
-
   try {
     const snap = await get(ref(db, 'teachers'));
     const list = snap.val() || {};
@@ -412,57 +657,41 @@ window.loginTeacher = async () => {
       t.login === login && t.password === pass
     );
     if (!found) return toast('❌ Неверный логин или пароль');
-
     teacher = { id: found[0], ...found[1] };
-    document.getElementById('roleBadge').textContent = teacher.fio;
+    document.getElementById('roleBadge').textContent = '👩‍🏫 ' + teacher.fio;
     document.getElementById('loginCard').style.display = 'none';
     document.getElementById('panel').classList.remove('hidden');
     document.getElementById('teacherInfo').textContent =
       `${teacher.fio} — ${teacher.subject || 'предмет не указан'} • класс: ${teacher.class || '—'}`;
-
-    // Заполняем селекты
     document.getElementById('selClass').innerHTML =
       classesList().map(c => `<option>${c}</option>`).join('');
     if (teacher.class) document.getElementById('selClass').value = teacher.class;
     if (teacher.subject) document.getElementById('selSubject').value = teacher.subject;
-
     document.getElementById('markDate').valueAsDate = new Date();
     document.getElementById('hwDate').valueAsDate = new Date();
-
-    toast(`Добро пожаловать, ${teacher.fio}`);
+    ringBell();
+    toast(`🔔 Добро пожаловать, ${teacher.fio}`);
   } catch (e) {
-    console.error(e);
-    toast('Ошибка подключения к базе: ' + e.message);
+    toast('Ошибка: ' + e.message);
   }
 };
-
 window.logoutTeacher = () => {
   teacher = null;
   document.getElementById('panel').classList.add('hidden');
   document.getElementById('loginCard').style.display = 'block';
   document.getElementById('roleBadge').textContent = 'Не авторизован';
-  document.getElementById('loginInput').value = '';
-  document.getElementById('passInput').value = '';
 };
 
-/* ============================================================
-   ЗАГРУЗКА УЧЕНИКОВ И ЖУРНАЛА
-   ============================================================ */
+/* ============ ЗАГРУЗКА ============ */
 window.loadStudents = async () => {
   currentClass = document.getElementById('selClass').value;
   const subject = document.getElementById('selSubject').value;
-
-  const [studentsSnap, marksSnap, termsSnap] = await Promise.all([
-    get(ref(db, 'students')),
-    get(ref(db, 'marks')),
-    get(ref(db, 'terms'))
+  const [ss, ms, ts] = await Promise.all([
+    get(ref(db,'students')), get(ref(db,'marks')), get(ref(db,'terms'))
   ]);
-
-  const allStudents = studentsSnap.val() || {};
-  const allMarks = marksSnap.val() || {};
-  cachedMarks = allMarks;
-  const allTerms = termsSnap.val() || {};
-
+  const allStudents = ss.val() || {};
+  const allMarks = ms.val() || {};
+  const allTerms = ts.val() || {};
   const students = Object.entries(allStudents)
     .filter(([, s]) => s.class === currentClass)
     .sort((a, b) => (a[1].fio || '').localeCompare(b[1].fio || ''));
@@ -471,9 +700,7 @@ window.loadStudents = async () => {
   const tbody = document.querySelector('#tbl tbody');
   const selSt = document.getElementById('selStudent');
   const selTerm = document.getElementById('termStudent');
-  tbody.innerHTML = '';
-  selSt.innerHTML = '';
-  selTerm.innerHTML = '';
+  tbody.innerHTML = ''; selSt.innerHTML = ''; selTerm.innerHTML = '';
 
   if (!students.length) {
     tbody.innerHTML = '<tr><td colspan="4" class="empty">Нет учеников в классе</td></tr>';
@@ -488,7 +715,6 @@ window.loadStudents = async () => {
       .filter(([, m]) => m.studentId === id && m.subject === subject)
       .map(([mid, m]) => ({ mid, ...m }))
       .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-
     const nums = myMarks.map(m => +m.value);
     const avg = nums.length ? nums.reduce((a, b) => a + b, 0) / nums.length : 0;
     const termKey = `${currentClass}_${subject}_${id}`;
@@ -509,13 +735,13 @@ window.loadStudents = async () => {
       : '<span class="empty" style="padding:0">нет оценок</span>';
 
     const termHtml = term
-      ? `${markBadge(term.value)} <small style="color:#64748b">зафиксирована</small>`
-      : `<b>${nums.length ? avgToMark(avg) : '—'}</b>
-         <small>${nums.length ? '(реком., сред. ' + avg.toFixed(2) + ')' : ''}</small>`;
+      ? `${markBadge(term.value)} <small style="color:#8a7a58">зафиксирована</small>`
+      : `<b style="font-family:Caveat;font-size:22px;color:#2d5a3f">${nums.length ? avgToMark(avg) : '—'}</b>
+         <small>${nums.length ? '(сред. ' + avg.toFixed(2) + ')' : ''}</small>`;
 
     tbody.innerHTML += `
       <tr>
-        <td><b>${escapeHtml(s.fio)}</b><br><small>${escapeHtml(s.birth || '')}</small></td>
+        <td><b>${escapeHtml(s.fio)}</b><br><small style="color:#8a7a58">${escapeHtml(s.birth || '')}</small></td>
         <td>${marksHtml}</td>
         <td>${termHtml}</td>
         <td>
@@ -525,22 +751,18 @@ window.loadStudents = async () => {
           <button class="btn-ghost btn-sm" onclick="quickMark('${id}',2)">2</button>
         </td>
       </tr>`;
-
     selSt.innerHTML += `<option value="${id}">${escapeHtml(s.fio)}</option>`;
     selTerm.innerHTML += `<option value="${id}">${escapeHtml(s.fio)}</option>`;
   }
 
-  // Статистика
   document.getElementById('statsCard').style.display = 'block';
   document.getElementById('stStudents').textContent = students.length;
   document.getElementById('stMarks').textContent = totalMarks;
-  document.getElementById('stAvg').textContent = totalMarks ? (sumMarks / totalMarks).toFixed(2) : '—';
+  document.getElementById('stAvg').textContent = totalMarks ? (sumMarks/totalMarks).toFixed(2) : '—';
   document.getElementById('stFive').textContent = fiveCount;
 };
 
-/* ============================================================
-   ОЦЕНКИ
-   ============================================================ */
+/* ============ ОЦЕНКИ ============ */
 window.addMark = async () => {
   const studentId = document.getElementById('selStudent').value;
   const value = +document.getElementById('selMark').value;
@@ -548,118 +770,66 @@ window.addMark = async () => {
   const date  = document.getElementById('markDate').value;
   const comment = document.getElementById('markComment').value.trim();
   const subject = document.getElementById('selSubject').value;
-
   if (!studentId) return toast('Выберите ученика');
   if (!date) return toast('Укажите дату');
-
-  try {
-    await push(ref(db, 'marks'), {
-      studentId, value, type, date, comment, subject,
-      className: currentClass,
-      teacherId: teacher.id,
-      teacherFio: teacher.fio,
-      createdAt: Date.now()
-    });
-    toast('✅ Оценка поставлена');
-    document.getElementById('markComment').value = '';
-    loadStudents();
-  } catch (e) {
-    toast('Ошибка: ' + e.message);
-  }
+  await push(ref(db, 'marks'), {
+    studentId, value, type, date, comment, subject,
+    className: currentClass, teacherId: teacher.id, teacherFio: teacher.fio,
+    createdAt: Date.now()
+  });
+  ringBell();
+  toast('✅ Оценка поставлена');
+  document.getElementById('markComment').value = '';
+  loadStudents();
 };
-
 window.quickMark = async (studentId, value) => {
-  const subject = document.getElementById('selSubject').value;
-  try {
-    await push(ref(db, 'marks'), {
-      studentId,
-      value,
-      type: 'Домашняя работа',
-      date: todayISO(),
-      subject,
-      className: currentClass,
-      teacherId: teacher.id,
-      teacherFio: teacher.fio,
-      createdAt: Date.now()
-    });
-    toast(`Оценка ${value} поставлена`);
-    loadStudents();
-  } catch (e) {
-    toast('Ошибка: ' + e.message);
-  }
+  await push(ref(db, 'marks'), {
+    studentId, value, type: 'Домашняя работа', date: todayISO(),
+    subject: document.getElementById('selSubject').value,
+    className: currentClass, teacherId: teacher.id, teacherFio: teacher.fio,
+    createdAt: Date.now()
+  });
+  toast(`Оценка ${value} поставлена`);
+  loadStudents();
 };
-
 window.delMark = async (mid) => {
-  if (!confirm('Удалить оценку? Действие необратимо.')) return;
-  try {
-    await remove(ref(db, 'marks/' + mid));
-    toast('Оценка удалена');
-    loadStudents();
-  } catch (e) {
-    toast('Ошибка: ' + e.message);
-  }
+  if (!confirm('Удалить оценку?')) return;
+  await remove(ref(db, 'marks/' + mid));
+  toast('Оценка удалена');
+  loadStudents();
 };
 
-/* ============================================================
-   ТРИМЕСТР
-   ============================================================ */
+/* ============ ТРИМЕСТР ============ */
 window.setTerm = async () => {
   const sid = document.getElementById('termStudent').value;
   const val = +document.getElementById('termValue').value;
   const subject = document.getElementById('selSubject').value;
-
   if (!sid) return toast('Выберите ученика');
-  if (!confirm(`Выставить триместровую ${val} по предмету "${subject}"? Изменить потом нельзя.`)) return;
-
-  try {
-    const key = `${currentClass}_${subject}_${sid}`;
-    const existing = await get(ref(db, 'terms/' + key));
-    if (existing.exists()) {
-      return toast('❌ Триместровая уже выставлена. Изменение только через директора.');
-    }
-    await set(ref(db, 'terms/' + key), {
-      studentId: sid,
-      subject,
-      className: currentClass,
-      value: val,
-      setBy: teacher.fio,
-      setAt: Date.now()
-    });
-    toast('🏆 Триместровая оценка зафиксирована');
-    loadStudents();
-  } catch (e) {
-    toast('Ошибка: ' + e.message);
-  }
+  if (!confirm(`Выставить триместровую ${val}? Изменить потом нельзя.`)) return;
+  const key = `${currentClass}_${subject}_${sid}`;
+  const existing = await get(ref(db, 'terms/' + key));
+  if (existing.exists()) return toast('❌ Уже выставлена');
+  await set(ref(db, 'terms/' + key), {
+    studentId: sid, subject, className: currentClass, value: val,
+    setBy: teacher.fio, setAt: Date.now()
+  });
+  toast('🏆 Триместровая зафиксирована');
+  loadStudents();
 };
 
-/* ============================================================
-   ДОМАШНЕЕ ЗАДАНИЕ
-   ============================================================ */
+/* ============ ДЗ ============ */
 window.addHomework = async () => {
   const date = document.getElementById('hwDate').value;
   const text = document.getElementById('hwText').value.trim();
   const subject = document.getElementById('selSubject').value;
-
   if (!text) return toast('Введите текст ДЗ');
-  if (!date) return toast('Укажите дату');
-
-  try {
-    await push(ref(db, 'homework'), {
-      class: currentClass,
-      subject,
-      date,
-      text,
-      teacherId: teacher.id,
-      teacherFio: teacher.fio,
-      createdAt: Date.now()
-    });
-    toast('✅ ДЗ задано');
-    document.getElementById('hwText').value = '';
-  } catch (e) {
-    toast('Ошибка: ' + e.message);
-  }
+  await push(ref(db, 'homework'), {
+    class: currentClass, subject, date, text,
+    teacherId: teacher.id, teacherFio: teacher.fio, createdAt: Date.now()
+  });
+  toast('✅ ДЗ задано');
+  document.getElementById('hwText').value = '';
 };
-
 window.showMyHomework = async () => {
   const subject = document.getElementById('selSubject').value;
   const snap = await get(ref(db, 'homework'));
@@ -667,20 +837,18 @@ window.showMyHomework = async () => {
   const list = Object.entries(all)
     .filter(([, h]) => h.class === currentClass && h.subject === subject)
     .sort((a, b) => (b[1].date || '').localeCompare(a[1].date || ''));
-
   const box = document.getElementById('hwPreview');
   if (!list.length) {
-    box.innerHTML = '<div class="empty">ДЗ по этому предмету ещё не задавались</div>';
+    box.innerHTML = '<div class="empty">ДЗ ещё не задавались</div>';
     return;
   }
   box.innerHTML = list.map(([id, h]) => `
-    <div style="background:#f0f9ff; border-left:4px solid #2563eb; padding:10px 14px; border-radius:8px; margin-bottom:8px;">
-      <b>${formatDate(h.date)}</b> — ${escapeHtml(h.subject)}
+    <div style="background:#f0f9e8; border-left:4px solid #2d5a3f; padding:10px 14px; border-radius:8px; margin-bottom:8px;">
+      <b style="font-family:Caveat;font-size:18px;color:#2d5a3f">${formatDate(h.date)}</b> — ${escapeHtml(h.subject)}
       <button class="btn-danger btn-sm" style="float:right" onclick="delHomework('${id}')">Удалить</button>
       <div style="margin-top:6px">${escapeHtml(h.text)}</div>
     </div>`).join('');
 };
-
 window.delHomework = async (id) => {
   if (!confirm('Удалить задание?')) return;
   await remove(ref(db, 'homework/' + id));
@@ -688,20 +856,13 @@ window.delHomework = async (id) => {
   showMyHomework();
 };
 
-/* ============================================================
-   ОТЧЁТЫ
-   ============================================================ */
+/* ============ ОТЧЁТ ============ */
 let lastReportRows = [];
-
 window.buildReport = async () => {
   const subject = document.getElementById('selSubject').value;
-  const [marksSnap, studentsSnap] = await Promise.all([
-    get(ref(db, 'marks')),
-    get(ref(db, 'students'))
-  ]);
-  const all = marksSnap.val() || {};
-  const students = studentsSnap.val() || {};
-
+  const [ms, ss] = await Promise.all([get(ref(db,'marks')), get(ref(db,'students'))]);
+  const all = ms.val() || {};
+  const students = ss.val() || {};
   const rows = {};
   for (const [id, m] of Object.entries(all)) {
     if (m.subject !== subject) continue;
@@ -710,78 +871,45 @@ window.buildReport = async () => {
     if (!rows[m.studentId]) rows[m.studentId] = { fio: s.fio, marks: [] };
     rows[m.studentId].marks.push(+m.value);
   }
-
   lastReportRows = Object.values(rows).map(r => {
-    const avg = r.marks.reduce((a, b) => a + b, 0) / r.marks.length;
-    return {
-      fio: r.fio,
-      count: r.marks.length,
-      avg: avg.toFixed(2),
-      recommended: avgToMark(avg)
-    };
-  }).sort((a, b) => a.fio.localeCompare(b.fio));
-
+    const avg = r.marks.reduce((a,b)=>a+b,0)/r.marks.length;
+    return { fio: r.fio, count: r.marks.length, avg: avg.toFixed(2), recommended: avgToMark(avg) };
+  }).sort((a,b) => a.fio.localeCompare(b.fio));
   if (!lastReportRows.length) {
-    document.getElementById('report').innerHTML = '<div class="empty">Нет данных для отчёта</div>';
+    document.getElementById('report').innerHTML = '<div class="empty">Нет данных</div>';
     return;
   }
-
   let html = `<table><thead><tr>
-    <th>Ученик</th><th>Кол-во оценок</th><th>Средний балл</th><th>Рекоменд. триместр</th>
+    <th>Ученик</th><th>Кол-во</th><th>Средний</th><th>Рекоменд. триместр</th>
   </tr></thead><tbody>`;
   for (const r of lastReportRows) {
     html += `<tr>
-      <td>${escapeHtml(r.fio)}</td>
-      <td>${r.count}</td>
-      <td>${r.avg}</td>
-      <td><b>${r.recommended}</b></td>
+      <td>${escapeHtml(r.fio)}</td><td>${r.count}</td><td>${r.avg}</td>
+      <td><b style="font-family:Caveat;font-size:20px;color:#2d5a3f">${r.recommended}</b></td>
     </tr>`;
   }
   html += `</tbody></table>`;
   document.getElementById('report').innerHTML = html;
 };
-
 window.exportCSV = () => {
   if (!lastReportRows.length) return toast('Сначала сформируйте отчёт');
   const subject = document.getElementById('selSubject').value;
   let csv = `Отчёт по предмету "${subject}", класс ${currentClass}\n`;
-  csv += 'Ученик;Кол-во оценок;Средний балл;Рекоменд. триместр\n';
-  for (const r of lastReportRows) {
-    csv += `${r.fio};${r.count};${r.avg};${r.recommended}\n`;
-  }
+  csv += 'Ученик;Кол-во;Средний;Рекоменд. триместр\n';
+  for (const r of lastReportRows) csv += `${r.fio};${r.count};${r.avg};${r.recommended}\n`;
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = `report_${currentClass}_${subject}_${todayISO()}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
+  a.href = url; a.download = `report_${currentClass}_${subject}_${todayISO()}.csv`;
+  a.click(); URL.revokeObjectURL(url);
   toast('CSV скачан');
 };
-
 window.clearReport = () => {
   document.getElementById('report').innerHTML = '';
   lastReportRows = [];
 };
 
-/* ============================================================
-   АВТОЗАПОЛНЕНИЕ ДАТ
-   ============================================================ */
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('markDate').valueAsDate = new Date();
-  document.getElementById('hwDate').valueAsDate = new Date();
-});
-
-/* ============================================================
-   ХОТКЕИ
-   ============================================================ */
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    document.getElementById('markComment').value = '';
-  }
-});
-
-console.log('✅ Кабинет учителя загружен — МБОУ СОШ №12 им. А. Ломоносова');
+console.log('✅ Кабинет учителя — МБОУ СОШ №12 им. А. Ломоносова');
 </script>
 </body>
 </html>
